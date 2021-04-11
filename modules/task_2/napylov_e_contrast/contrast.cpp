@@ -82,7 +82,6 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
 
     #pragma omp parallel 
     {
-        std::cout << "num threads in parallel section: " << omp_get_num_threads() << std::endl;
         const int curr_thread = omp_get_thread_num();
         #pragma omp for
         for (int i = 0; i < static_cast<int>(image.size()); i++) {
@@ -93,7 +92,7 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
                 min_vec[curr_thread] = image[i];
             }
         }
-        //std::cout << curr_thread << " finished" << std::endl; 
+        std::cout << curr_thread << " finished" << std::endl; 
     }
 
     // Reduction
