@@ -8,6 +8,8 @@
 
 #include "../../../modules/task_2/napylov_e_contrast/contrast.h"
 
+
+
 void print_vec(const VecImage& vec) {
     for (auto val : vec) {
         std::cout << static_cast<int>(val) << ' ';
@@ -68,30 +70,45 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
 
     // MSVC19 does not support the min/max reduction :(
     // -> Each thread searches for a local min max.
-    std::vector<unsigned char> min_vec(omp_get_max_threads());
+
+    const int max_threads = omp_get_max_threads();
+    std::cout << "max_threads: " << max_threads << std::endl;
+
+    std::vector<unsigned char> min_vec(max_threads);
     std::fill(min_vec.begin(), min_vec.end(), 255);
-    std::vector<unsigned char> max_vec(omp_get_max_threads());
+    std::vector<unsigned char> max_vec(max_threads);
     std::fill(max_vec.begin(), max_vec.end(), 0);
-    #pragma omp parallel for
-    for (int i = 0; i < static_cast<int>(image.size()); i++) {
-        if (image[i] > max_vec[omp_get_thread_num()]) {
-            max_vec[omp_get_thread_num()] = image[i];
+    
+    
+
+    #pragma omp parallel 
+    {
+        const int curr_thread = omp_get_thread_num();
+        #pragma omp for
+        for (int i = 0; i < static_cast<int>(image.size()); i++) {
+            if (image[i] > max_vec[curr_thread]) {
+                max_vec[curr_thread] = image[i];
+            }
+            if (image[i] < min_vec[curr_thread]) {
+                min_vec[curr_thread] = image[i];
+            }
         }
-        if (image[i] < min_vec[omp_get_thread_num()]) {
-            min_vec[omp_get_thread_num()] = image[i];
-        }
+        std::cout << curr_thread << " finished" << std::endl; 
     }
+
     // Reduction
+    #pragma omp master
+    std::cout << "master" << std::endl;
     max_col = *std::max_element(max_vec.begin(), max_vec.end());
     min_col = *std::min_element(min_vec.begin(), min_vec.end());
-    return std::pair<double, double>(min_col, max_col);
+    return std::pair<unsigned char, unsigned char>(min_col, max_col);
 }
 
 VecImage add_contrast_omp(VecImage image, unsigned char down,
                                           unsigned char up) {
     assert(up > down);
 
-    std::pair<double, double> minmax = minmax_omp(image);
+    std::pair<unsigned char, unsigned char> minmax = minmax_omp(image);
     unsigned char min_col = minmax.first;
     unsigned char max_col = minmax.second;
 
