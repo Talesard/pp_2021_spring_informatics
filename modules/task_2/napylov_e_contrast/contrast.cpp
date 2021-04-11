@@ -77,10 +77,8 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
     std::fill(min_vec.begin(), min_vec.end(), 255);
     std::vector<unsigned char> max_vec(max_threads);
     std::fill(max_vec.begin(), max_vec.end(), 0);
-    
-    
 
-    #pragma omp parallel 
+    #pragma omp parallel
     {
         const int curr_thread = omp_get_thread_num();
         #pragma omp for
@@ -92,7 +90,7 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
                 min_vec[curr_thread] = image[i];
             }
         }
-        std::cout << curr_thread << " finished" << std::endl; 
+        std::cout << curr_thread << " finished" << std::endl;
     }
 
     // Reduction
@@ -104,7 +102,6 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
 }
 
 VecImage add_contrast_omp(VecImage image) {
-
     std::pair<unsigned char, unsigned char> minmax = minmax_omp(image);
     unsigned char min_col = minmax.first;
     unsigned char max_col = minmax.second;
