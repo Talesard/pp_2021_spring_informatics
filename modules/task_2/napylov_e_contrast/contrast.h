@@ -17,10 +17,8 @@ Image vec_to_image(const VecImage& vec, int w, int h);
 
 VecImage RandomVector(int size);
 
-VecImage add_contrast(VecImage image, unsigned char down = 0,
-                                      unsigned char up = 255);
+VecImage add_contrast(VecImage image);
 
-VecImage add_contrast_omp(VecImage image, unsigned char down = 0,
-                                          unsigned char up = 255);
+VecImage add_contrast_omp(VecImage image);
 
 #endif  // MODULES_TASK_2_NAPYLOV_E_CONTRAST_CONTRAST_H_

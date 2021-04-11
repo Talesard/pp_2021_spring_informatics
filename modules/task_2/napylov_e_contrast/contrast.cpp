@@ -49,8 +49,7 @@ VecImage RandomVector(int size) {
     return result;
 }
 
-VecImage add_contrast(VecImage image, unsigned char down, unsigned char up) {
-    assert(up > down);
+VecImage add_contrast(VecImage image) {
     unsigned char min = *std::min_element(image.begin(), image.end());
     unsigned char max = *std::max_element(image.begin(), image.end());
     if (max == min) {
@@ -58,7 +57,7 @@ VecImage add_contrast(VecImage image, unsigned char down, unsigned char up) {
     } else {
         for (size_t i = 0; i < image.size(); i++) {
             image[i] = round((static_cast<double>((image[i] - min))
-                / static_cast<double>((max - min)))* (up - down));
+                / static_cast<double>((max - min))) * 255);
         }
         return image;
     }
@@ -83,6 +82,7 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
 
     #pragma omp parallel 
     {
+        std::cout << "num threads in parallel section: " << omp_get_num_threads() << std::endl;
         const int curr_thread = omp_get_thread_num();
         #pragma omp for
         for (int i = 0; i < static_cast<int>(image.size()); i++) {
@@ -93,7 +93,7 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
                 min_vec[curr_thread] = image[i];
             }
         }
-        std::cout << curr_thread << " finished" << std::endl; 
+        //std::cout << curr_thread << " finished" << std::endl; 
     }
 
     // Reduction
@@ -104,9 +104,7 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
     return std::pair<unsigned char, unsigned char>(min_col, max_col);
 }
 
-VecImage add_contrast_omp(VecImage image, unsigned char down,
-                                          unsigned char up) {
-    assert(up > down);
+VecImage add_contrast_omp(VecImage image) {
 
     std::pair<unsigned char, unsigned char> minmax = minmax_omp(image);
     unsigned char min_col = minmax.first;
@@ -118,7 +116,7 @@ VecImage add_contrast_omp(VecImage image, unsigned char down,
         #pragma omp parallel for
         for (int i = 0; i < static_cast<int>(image.size()); i++) {
             image[i] = round((static_cast<double>((image[i] - min_col))
-                / static_cast<double>((max_col - min_col))) * (up - down));
+                / static_cast<double>((max_col - min_col))) * 255);
         }
         return image;
     }
