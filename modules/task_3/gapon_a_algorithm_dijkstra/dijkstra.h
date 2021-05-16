@@ -4,10 +4,10 @@
 #define MODULES_TASK_3_GAPON_A_ALGORITHM_DIJKSTRA_DIJKSTRA_H_
 #include <vector>
 
-std::vector<int> generateGraph(int size);
-std::vector<int> Dijkstra(const std::vector<int>& graph,
-int s_vertex, int e_vertex);
-std::vector<int> Parallel_Dijkstra(const std::vector<int>& graph,
-int s_vertex, int e_vertex);
+std::vector<int> generateSimpleGraph(int size);
+std::vector<int> dijkstra(const std::vector<int>& graph,
+int start, int end);
+std::vector<int> dijkstraParallel(const std::vector<int>& graph,
+int start, int end);
 
 #endif  //  MODULES_TASK_3_GAPON_A_ALGORITHM_DIJKSTRA_DIJKSTRA_H_

@@ -5,24 +5,24 @@
 #include "../../../modules/task_3/gapon_a_algorithm_dijkstra/dijkstra.h"
 
 
-TEST(Dijkstra, test_matrix_generation_NUMBER_3) {
-    std::vector<int> graf(16);
-    graf = generateGraph(4);
+TEST(dijkstra, test_matrix_generation) {
+    std::vector<int> g(16);
+    g = generateSimpleGraph(4);
     std::vector<int> res = { 4, 1 };
-    EXPECT_EQ(Dijkstra(graf, 1, 4), res);
+    EXPECT_EQ(dijkstra(g, 1, 4), res);
 }
 
-TEST(Dijkstra, test_three_points) {
-    std::vector<int> graf = { 0, 2, 3,
+TEST(dijkstra, test_three_points) {
+    std::vector<int> g = { 0, 2, 3,
                           2, 0, 1,
                           3, 1, 0 };
 
     std::vector<int> res = { 3, 1 };
-    EXPECT_EQ(Dijkstra(graf, 1, 3), res);
+    EXPECT_EQ(dijkstra(g, 1, 3), res);
 }
 
-TEST(Dijkstra, throws_with_negative_weight) {
-    std::vector<int> graf = { 0, -5, 9, 0, 0, 14,
+TEST(dijkstra, throws_with_negative_weight) {
+    std::vector<int> g = { 0, -5, 9, 0, 0, 14,
                           7, 0, 10, 15, 0, 0,
                           9, 10, 0, 11, 0, 2,
                           0, 15, 11, 0, 6, 0,
@@ -30,11 +30,11 @@ TEST(Dijkstra, throws_with_negative_weight) {
                           14, 0, 2, 0, 9, 0 };
 
     std::vector<int> res = { 5, 5, 5, 5 };
-    ASSERT_ANY_THROW(Dijkstra(graf, 5, 1));
+    ASSERT_ANY_THROW(dijkstra(g, 5, 1));
 }
 
-TEST(Dijkstra, throws_with_wrong_arguments) {
-    std::vector<int> graf = { 0, -5, 9, 0, 0, 14,
+TEST(dijkstra, throws_with_wrong_arguments) {
+    std::vector<int> g = { 0, -5, 9, 0, 0, 14,
                           7, 0, 10, 15, 0, 0,
                           9, 10, 0, 11, 0, 2,
                           0, 15, 11, 0, 6, 0,
@@ -42,24 +42,24 @@ TEST(Dijkstra, throws_with_wrong_arguments) {
                           14, 0, 2, 0, 9, 0, 99, 9 };
 
     std::vector<int> res = { 5, 5, 5, 5 };
-    ASSERT_ANY_THROW(Dijkstra(graf, 5, 1));
+    ASSERT_ANY_THROW(dijkstra(g, 5, 1));
 }
 
-TEST(Dijkstra, passes_if_start_equal_end) {
-    std::vector<int> graf = { 0, 2, 3,
+TEST(dijkstra, passes_if_start_equal_end) {
+    std::vector<int> g = { 0, 2, 3,
                           2, 0, 1,
                           3, 1, 0 };
 
-    ASSERT_NO_THROW(Dijkstra(graf, 3, 3));
+    ASSERT_NO_THROW(dijkstra(g, 3, 3));
 }
 
 TEST(dijkstra, throws_with_no_graph) {
-    std::vector<int> graf = {};
-    ASSERT_ANY_THROW(Dijkstra(graf, 1, 1));
+    std::vector<int> g = {};
+    ASSERT_ANY_THROW(dijkstra(g, 1, 1));
 }
 
-TEST(Dijkstra, test_six_point) {
-    std::vector<int> graf = { 0, 7, 9, 0, 0, 14,
+TEST(dijkstra, test_six_point) {
+    std::vector<int> g = { 0, 7, 9, 0, 0, 14,
                           7, 0, 10, 15, 0, 0,
                           9, 10, 0, 11, 0, 2,
                           0, 15, 11, 0, 6, 0,
@@ -67,11 +67,11 @@ TEST(Dijkstra, test_six_point) {
                           14, 0, 2, 0, 9, 0 };
 
     std::vector<int> res = { 5, 6, 3, 1 };
-    EXPECT_EQ(Dijkstra(graf, 1, 5), res);
+    EXPECT_EQ(dijkstra(g, 1, 5), res);
 }
 
-TEST(Dijkstra, test_parallel_six_point) {
-    std::vector<int> graf = { 0, 7, 9, 0, 0, 14,
+TEST(dijkstra, test_parallel_six_point) {
+    std::vector<int> g = { 0, 7, 9, 0, 0, 14,
                           7, 0, 10, 15, 0, 0,
                           9, 10, 0, 11, 0, 2,
                           0, 15, 11, 0, 6, 0,
@@ -79,5 +79,5 @@ TEST(Dijkstra, test_parallel_six_point) {
                           14, 0, 2, 0, 9, 0 };
 
     std::vector<int> res = { 5, 6, 3, 1 };
-    EXPECT_EQ(Parallel_Dijkstra(graf, 1, 5), res);
+    EXPECT_EQ(dijkstraParallel(g, 1, 5), res);
 }
