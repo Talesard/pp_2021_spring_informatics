@@ -91,7 +91,7 @@ std::vector<int> Dijkstra(const std::vector<int>& graph,
                         points_len[i] = tmp;
                         std::vector<int> MinNumCoin;
                         for (int i = 0; i <= tmp; i++) {
-                            MinNumCoin.push_back(i);
+                           // MinNumCoin.push_back(i);
                         }
                     }
                 }
