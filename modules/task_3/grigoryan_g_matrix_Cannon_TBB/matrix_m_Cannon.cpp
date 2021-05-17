@@ -128,8 +128,10 @@ matrix AlgorithmCannonTBB(const matrix &A, const matrix &B) {
             yBlockB = yThread * blockSize;
             xBlockB = yBlockA + k;
 
-            num1[k] = std::vector<double>(tempA[xBlockA].begin() + yBlockA, tempA[xBlockA].begin() + yBlockA + blockSize);
-            num2[k] = std::vector<double>(tempB[xBlockB].begin() + yBlockB, tempB[xBlockB].begin() + yBlockB + blockSize);
+            num1[k] = std::vector<double>(tempA[xBlockA].begin() + yBlockA,
+			          tempA[xBlockA].begin() + yBlockA + blockSize);
+            num2[k] = std::vector<double>(tempB[xBlockB].begin() + yBlockB,
+			          tempB[xBlockB].begin() + yBlockB + blockSize);
         }
         for (int kk = 0; kk < q; kk++) {
             for (int x = 0; x < blockSize; x++) {
@@ -146,8 +148,10 @@ matrix AlgorithmCannonTBB(const matrix &A, const matrix &B) {
                 int yA = ((yBlockA / blockSize + kk + 1) % q) * blockSize;
                 int xB = ((xBlockB / blockSize + kk + 1) % q) * blockSize + k;
                 int yB = yThread * blockSize;
-                num1[k] = std::vector<double>(tempA[xA].begin() + yA, tempA[xA].begin() + yA + blockSize);
-                num2[k] = std::vector<double>(tempB[xB].begin() + yB, tempB[xB].begin() + yB + blockSize);
+                num1[k] = std::vector<double>(tempA[xA].begin() + yA,
+				          tempA[xA].begin() + yA + blockSize);
+                num2[k] = std::vector<double>(tempB[xB].begin() + yB,
+				          tempB[xB].begin() + yB + blockSize);
             }
         }
             for (int x = 0; x < blockSize; x++) {

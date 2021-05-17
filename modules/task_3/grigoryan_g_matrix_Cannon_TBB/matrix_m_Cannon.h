@@ -1,6 +1,6 @@
 // Copyright 2021 Grigoryan Garry
-#ifndef MODULES_TASK_3_GRIGORYAN_G_CANNON_TBB_CANNON_H_
-#define MODULES_TASK_3_GRIGORYAN_G_CANNON_TBB_CANNON_H_
+#ifndef MODULES_TASK_3_GRIGORYAN_G_MATRIX_CANNON_TBB_MATRIX_M_CANNON_H_
+#define MODULES_TASK_3_GRIGORYAN_G_MATRIX_CANNON_TBB_MATRIX_M_CANNON_H_ 
 
 #include <vector>
 #include <complex>
@@ -20,4 +20,4 @@ matrix AlgorithmCannonTBB(const matrix &A, const matrix &B);
 bool CompareMatrix(const matrix &A, const matrix &B);
 bool CompareValues(const double &a, const double &b);
 
-#endif  // MODULES_TASK_3_GRIGORYAN_G_CANNON_TBB_CANNON_H_
+#endif  // MODULES_TASK_3_GRIGORYAN_G_MATRIX_CANNON_TBB_MATRIX_M_CANNON_H_
