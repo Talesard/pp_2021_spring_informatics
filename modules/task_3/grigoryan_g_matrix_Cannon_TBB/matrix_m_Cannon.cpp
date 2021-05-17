@@ -1,5 +1,5 @@
 // Copyright 2021 Grigoryan Garry
-#include "../../../modules/task_3/grigoryan_g_matrix_Cannon_TBB/matrix_m_Cannon.h"
+#include "matrix_m_Cannon.h"
 #include <tbb/tbb.h>
 #include <random>
 #include <iostream>

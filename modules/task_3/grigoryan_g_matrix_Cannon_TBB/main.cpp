@@ -7,7 +7,7 @@
 #include <numeric>
 #include <random>
 #include <stack>
-#include "../../../modules/task_3/grigoryan_g_matrix_Cannon_TBB/matrix_m_Cannon.h"
+#include "matrix_m_Cannon.h"
 
 
 TEST(Matrix_Cannon_tbb, throw_when_different_size_mat) {
