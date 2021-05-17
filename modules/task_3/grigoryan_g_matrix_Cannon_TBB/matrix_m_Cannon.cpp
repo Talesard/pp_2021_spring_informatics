@@ -1,5 +1,4 @@
 // Copyright 2021 Grigoryan Garry
-
 #include "../../../modules/task_3/grigoryan_g_matrix_Cannon_TBB/matrix_m_Cannon.h"
 #include <tbb/tbb.h>
 #include <random>
@@ -7,6 +6,7 @@
 #include <algorithm>
 #include <exception>
 #include <vector>
+
 
 matrix RandomMatrix(const int n) {
     if (n <= 0)
@@ -129,9 +129,9 @@ matrix AlgorithmCannonTBB(const matrix &A, const matrix &B) {
             xBlockB = yBlockA + k;
 
             num1[k] = std::vector<double>(tempA[xBlockA].begin() + yBlockA,
-			          tempA[xBlockA].begin() + yBlockA + blockSize);
+             tempA[xBlockA].begin() + yBlockA + blockSize);
             num2[k] = std::vector<double>(tempB[xBlockB].begin() + yBlockB,
-			          tempB[xBlockB].begin() + yBlockB + blockSize);
+             tempB[xBlockB].begin() + yBlockB + blockSize);
         }
         for (int kk = 0; kk < q; kk++) {
             for (int x = 0; x < blockSize; x++) {
@@ -149,9 +149,9 @@ matrix AlgorithmCannonTBB(const matrix &A, const matrix &B) {
                 int xB = ((xBlockB / blockSize + kk + 1) % q) * blockSize + k;
                 int yB = yThread * blockSize;
                 num1[k] = std::vector<double>(tempA[xA].begin() + yA,
-				          tempA[xA].begin() + yA + blockSize);
+              tempA[xA].begin() + yA + blockSize);
                 num2[k] = std::vector<double>(tempB[xB].begin() + yB,
-				          tempB[xB].begin() + yB + blockSize);
+              tempB[xB].begin() + yB + blockSize);
             }
         }
             for (int x = 0; x < blockSize; x++) {
