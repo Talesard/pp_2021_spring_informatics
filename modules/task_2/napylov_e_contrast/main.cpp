@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "./contrast.h"
-// comment for commit
+
 TEST(Linear_stretch_contrast_OMP, Manual_Calc_1) {
     VecImage image = {0, 1, 1, 1, 0, 1 };
     VecImage correct = { 0, 255, 255, 255, 0, 255 };
@@ -42,7 +42,7 @@ TEST(Linear_stretch_contrast_OMP, Manual_Calc_4) {
 
 TEST(Linear_stretch_contrast_OMP, Seq_vs_Omp) {
     double t1, t2, dt_seq, dt_omp;
-    VecImage image = RandomVector(1920 * 1080);
+    VecImage image = RandomVector(200 * 400);
 
     t1 = omp_get_wtime();
     VecImage res_seq = add_contrast(image);
