@@ -16,14 +16,26 @@ std::vector<int> ShellSort(const std::vector<int>& massiv, int size) {
 
     for (step = size / 2; step > 0; step = step / 2) {
         for (i = step; i < size; i++) {
-            for (j = i - step; j >= 0 && mass[j] > mass[j + step]; j = j - step) {
-                temp = mass[j];
-                mass[j] = mass[j + step];
-                mass[j + step] = temp;
+            for (j = i - step; j >= 0; j = j - step) {
+                if (mass[j] > mass[j + step]) {
+                    temp = mass[j];
+                    mass[j] = mass[j + step];
+                    mass[j + step] = temp;
+                }
             }
         }
     }
     return mass;
+}
+
+std::vector<int> Random(int size) {
+    std::mt19937 gen;
+    gen.seed(static_cast<unsigned int>(time(0)));
+    std::vector<int> vec1(size);
+    for (int i = 0; i < size; i++) {
+        vec1[i] = gen() % 100;
+    }
+    return vec1;
 }
 
 std::vector<int> BetcherEven(const std::vector<int>& massiv1, const std::vector<int>& massiv2) {
