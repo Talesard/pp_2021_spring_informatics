@@ -20,7 +20,7 @@ TEST(Matrix_testing, invalid_argument2) {
 }
 
 TEST(Gauss_filter, 1300x1200) {
-  int rows = 90;
+  int rows = 12;
   int cols = 90;
   auto rand_matrix = matrixCreation(rows, cols);
   auto matrix = transpose(rand_matrix, rows, cols);
