@@ -1,4 +1,5 @@
-// Copyright 2020 Lyutova Tanya
+// Copyright 2021 Lyutova Tanya
+#include <random>
 #include "../../modules/task_1/lyutova_t_sobel/lyutova_t_sobel.h"
 
 Image sobel(const Image& image) {
@@ -21,4 +22,13 @@ Image sobel(const Image& image) {
             filteredImage(x, y) = clamp(static_cast<int>(std::sqrt(valX * valX + valY * valY)), 0, 255);
         }
     return filteredImage;
+}
+
+Image createRandomImage(int rows, int cols) {
+    Image image(rows, cols);
+    std::random_device rd;
+    std::mt19937 generator(rd());
+    for (size_t i = 0; i < image.pixels.size(); i++)
+        image.pixels[i] = std::abs(static_cast<int>(generator())) % 256;
+    return image;
 }
