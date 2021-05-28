@@ -174,7 +174,6 @@ Matrix increase_contrast_std(const Matrix& image, int w, int h,
         }
     };
     std::vector<std::thread> threads;
-
     for (int i = 0; i < num_threads; i++) {
         threads.push_back(std::thread(part_increase_contrast, i));
     }
