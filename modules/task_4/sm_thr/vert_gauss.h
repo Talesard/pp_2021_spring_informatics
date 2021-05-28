@@ -1,6 +1,6 @@
 // Copyright 2021 Molotkova Svetlana
-#ifndef MODULES_TASK_4_SM_TR_VERT_GAUSS_H_
-#define MODULES_TASK_4_SM_TR_VERT_GAUSS_H_
+#ifndef MODULES_TASK_4_SM_THR_VERT_GAUSS_H_
+#define MODULES_TASK_4_SM_THR_VERT_GAUSS_H_
 
 #include <vector>
 #include <random>
@@ -12,4 +12,4 @@ std::vector<double> transpose(const std::vector<double>& matrix, int rows, int c
 std::vector<double> gaussKernel(int radius, int sigma);
 std::vector<double> gaussFilter(const std::vector<double>& matrix, int rows, int cols, int radius, int sigma);
 std::vector<double> gaussFilter_par(const std::vector<double>& matrix, int rows, int cols, int radius, int sigma);
-#endif  // MODULES_TASK_4_SM_TR_VERT_GAUSS_H_
+#endif  // MODULES_TASK_4_SM_THR_VERT_GAUSS_H_
