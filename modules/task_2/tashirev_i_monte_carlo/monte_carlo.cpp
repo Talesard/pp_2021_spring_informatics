@@ -49,9 +49,9 @@ double ompMonteCarlo(double(*f)(const std::vector<double>&),
     int num_th;
     #pragma omp parallel shared(r) reduction(+ : res)
     {
+        num_th = omp_get_num_threads();
         std::mt19937 gen;
         gen.seed(static_cast<unsigned int>(time(0)));
-        num_th = omp_get_num_threads();
         std::vector<double> r1(mult);
         for (int i = 0; i < steps; ++i) {
             for (int j = 0; j < mult; ++j)

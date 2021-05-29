@@ -1,11 +1,10 @@
 // Copyright 2021 Gushchin Artem
 #include <gtest/gtest.h>
+#include <tbb/tick_count.h>
 
 #include <cmath>
 #include <iostream>
 #include <vector>
-
-#include "../../../3rdparty/unapproved/unapproved.h"
 
 #include "./simpsonMethod.h"
 
@@ -53,20 +52,16 @@ TEST(SimpsonsMethodIntegrating, DISABLED_loadTest) {
     std::vector<std::pair<double, double>> segments = { { 0, 5 }, { -2, 3 },
                                                         { -1, 3 } };
 
-    auto seq_start = std::chrono::steady_clock::now();
-    auto seq = simpsonsMethod(func, segments, 100000000);
-    auto seq_end = std::chrono::steady_clock::now();
+    auto seq_start = tbb::tick_count::now();
+    auto seq = simpsonsMethod(func, segments, 500000000);
+    auto seq_end = tbb::tick_count::now();
 
-    auto par_start = std::chrono::steady_clock::now();
-    auto par = parallelSimpsonsMethod(func, segments, 100000000);
-    auto par_end = std::chrono::steady_clock::now();
+    auto par_start = tbb::tick_count::now();
+    auto par = parallelSimpsonsMethod(func, segments, 500000000);
+    auto par_end = tbb::tick_count::now();
 
-    std::cout << "Seq time: "
-              << std::chrono::duration<double>(seq_end - seq_start).count()
-              << std::endl;
-    std::cout << "Par time: "
-              << std::chrono::duration<double>(par_end - par_start).count()
-              << std::endl;
+    std::cout << "Seq time: " << (seq_end - seq_start).seconds() << std::endl;
+    std::cout << "Par time: " << (par_end - par_start).seconds() << std::endl;
 
     ASSERT_NEAR(324.56477, par, 0.00001);
     ASSERT_NEAR(seq, par, 0.00001);
