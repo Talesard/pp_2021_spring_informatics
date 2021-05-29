@@ -46,7 +46,7 @@ TEST(SimpsonsMethodIntegrating, twoDimentionalFunction) {
     ASSERT_NEAR(seqResult, parallelResult, 0.00001);
 }
 
-TEST(SimpsonsMethodIntegrating, loadTest) {
+TEST(SimpsonsMethodIntegrating, DISABLED_loadTest) {
     auto func = [](const std::vector<double>& arguments) {
         return arguments[0] + arguments[1] + cos(arguments[2]);
     };
