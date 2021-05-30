@@ -8,7 +8,7 @@
 #include "../../../modules/task_3/bulychev_v_int_rec/int_rec_tbb.h"
 
 double Calculation_Seq(std::vector<double> a, std::vector<double> b,
-    int n, double(*f)(double, double)) {
+    int n, double(*f)(std::vector<double>)) {
     int size_a = a.size();
     std::vector<double> h;
     double result = 0.0;
@@ -26,7 +26,7 @@ double Calculation_Seq(std::vector<double> a, std::vector<double> b,
             double t3 = h[j] * 0.5;
             p[j] = (i % n) * h[j] + a[j] + t3;
         }
-        result += f(p[0], p[1]);
+        result += f(p);
     }
 
     int t4 = size_a;
@@ -41,8 +41,7 @@ double Calculation_Seq(std::vector<double> a, std::vector<double> b,
 }
 
 double Calculation_Tbb(std::vector<double> a, std::vector<double> b,
-    int n, double(*f)(double, double)) {
-    tbb::task_scheduler_init init(1);
+    int n, double(*f)(std::vector<double>)) {
     int size_a = a.size();
     std::vector<double> h;
     double result = 0.0;
@@ -64,7 +63,7 @@ double Calculation_Tbb(std::vector<double> a, std::vector<double> b,
                 for (int j = 0; j < size_a; j++) {
                     p[j] = (i % n) * h[j] + a[j] + h[j] * 0.5;
                 }
-                l_result += f(p[0], p[1]);
+                l_result += f(p);
             }
             return l_result;
         }, std::plus<double>());
