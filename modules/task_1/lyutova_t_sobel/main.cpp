@@ -10,7 +10,7 @@ TEST(sequential, RandomImage) {
 
 TEST(sequential, Different) {
     Image image = createRandomImage(100, 100);
-    Image sobel(100,100);
+    Image sobel(100, 100);
     ASSERT_NE(image.pixels, sobel.pixels);
 }
 
