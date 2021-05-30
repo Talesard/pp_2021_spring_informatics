@@ -11,7 +11,7 @@ for /r "." %%a in (build\bin\*_omp.exe) do (
     echo -------------------------------------
     echo %%~na
     echo -------------------------------------
-    %%~fa --gtest_repeat=2000
+    %%~fa --gtest_repeat=20000
 )
 
 for /r "." %%a in (build\bin\*_tbb.exe) do (
