@@ -46,9 +46,9 @@ TEST(Image_contrast, Test4) {
         ASSERT_EQ(result[i], count[i]);
     }
 }
-TEST(Image_contrast, DISABLED_Test5) {
-    int l = 10000;
-    int k = 10000;
+TEST(Image_contrast, Test5) {
+    int l = 10;
+    int k = 10;
     Result image = RandomI(l, k);
     Result result_seq = Contrast(image);
     Result result_std = Contraststd(image);
