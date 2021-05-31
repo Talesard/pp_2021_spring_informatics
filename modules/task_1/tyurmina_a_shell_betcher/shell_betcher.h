@@ -3,6 +3,7 @@
 #define MODULES_TASK_1_TYURMINA_A_SHELL_BETCHER_SHELL_BETCHER_H_
 #include <iostream>
 #include <vector>
+#include <random>
 
 std::vector<int> Random(int size);
 std::vector<int> ShellSort(const std::vector<int>& massiv, int size);

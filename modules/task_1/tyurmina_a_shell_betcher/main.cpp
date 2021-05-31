@@ -45,7 +45,7 @@ TEST(shell_betcher, shell_b_20) {
     ASSERT_EQ(vec, sort);
 }
 
-TEST(shell_betcher, shell_betcher_50_rand) {
+TEST(shell_betcher, shell_b_50_rand) {
     std::vector<int> vec = Random(50);
     std::vector<int> sort = ShellSort(vec, 50);
     std::sort(vec.begin(), vec.end());
@@ -53,7 +53,7 @@ TEST(shell_betcher, shell_betcher_50_rand) {
     ASSERT_EQ(vec, sort);
 }
 
-TEST(shell_betcher, shell_betcher_50_rand) {
+TEST(shell_betcher, shell_b_50_rand_s) {
     std::vector<int> vec = Random(50);
     std::vector<int> sort = ShellBetcherS(vec, 50);
     std::sort(vec.begin(), vec.end());

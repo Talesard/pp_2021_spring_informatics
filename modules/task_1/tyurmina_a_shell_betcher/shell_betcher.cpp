@@ -31,11 +31,11 @@ std::vector<int> ShellSort(const std::vector<int>& massiv, int size) {
 std::vector<int> Random(int size) {
     std::mt19937 gen;
     gen.seed(static_cast<unsigned int>(time(0)));
-    std::vector<int> vec1(size);
+    std::vector<int> vec0(size);
     for (int i = 0; i < size; i++) {
-        vec1[i] = gen() % 100;
+        vec0[i] = gen() % 100;
     }
-    return vec1;
+    return vec0;
 }
 
 std::vector<int> BetcherEven(const std::vector<int>& massiv1, const std::vector<int>& massiv2) {
