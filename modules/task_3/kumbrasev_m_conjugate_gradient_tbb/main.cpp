@@ -10,7 +10,7 @@ TEST(Conjugate_gradient_omp, M2) {
     tbb::tick_count t0 = tbb::tick_count::now();
     std::vector<double> Mx = mMultv(M, X);
     tbb::tick_count t1 = tbb::tick_count::now();
-    std::cout << "ParTime:" << (t3 - t2).seconds() << std::endl;
+    std::cout << "ParTime:" << (t1 - t0).seconds() << std::endl;
     std::vector<double> res = { { 7, 9 } };
     for (size_t i = 0; i < res.size(); ++i) {
         ASSERT_NEAR(Mx[i], res[i], 0.5);
@@ -34,7 +34,7 @@ TEST(Conjugate_gradient_omp, M3) {
     tbb::tick_count t0 = tbb::tick_count::now();
     std::vector<double> res = mMultv(M, X);
     tbb::tick_count t1 = tbb::tick_count::now();
-    std::cout << "ParTime:" << (t3 - t2).seconds() << std::endl;
+    std::cout << "ParTime:" << (t1 - t0).seconds() << std::endl;
     std::vector<double> finalr = { { 172.2, 137.814, 134.175 } };
     for (size_t i = 0; i < res.size(); ++i) {
         ASSERT_NE(B[i], res[i]);
@@ -48,7 +48,7 @@ TEST(Conjugate_gradient_omp, M4) {
     tbb::tick_count t0 = tbb::tick_count::now();
     std::vector<double> res = mMultv(M, X);
     tbb::tick_count t1 = tbb::tick_count::now();
-    std::cout << "ParTime:" << (t3 - t2).seconds() << std::endl;
+    std::cout << "ParTime:" << (t1 - t0).seconds() << std::endl;
     for (size_t i = 0; i < res.size(); ++i) {
         ASSERT_NE(B[i], res[i]);
     }
@@ -60,7 +60,7 @@ TEST(Conjugate_gradient_omp, MultiMB) {
     tbb::tick_count t0 = tbb::tick_count::now();
     std::vector<double> res = mMultv(M, B);
     tbb::tick_count t1 = tbb::tick_count::now();
-    std::cout << "ParTime:" << (t3 - t2).seconds() << std::endl;
+    std::cout << "ParTime:" << (t1 - t0).seconds() << std::endl;
     std::vector<double> I = { { 39, 32, 93 } };
     for (size_t i = 0; i < res.size(); ++i) {
         ASSERT_EQ(I[i], res[i]);
@@ -74,7 +74,7 @@ TEST(Conjugate_gradient_omp, MultiMBRandom) {
     tbb::tick_count t0 = tbb::tick_count::now();
     std::vector<double> res = mMultv(M, B);
     tbb::tick_count t1 = tbb::tick_count::now();
-    std::cout << "ParTime:" << (t3 - t2).seconds() << std::endl;
+    std::cout << "ParTime:" << (t1 - t0).seconds() << std::endl;
     std::vector<double> I = B;
     for (size_t i = 0; i < B.size(); ++i) {
         ASSERT_EQ(I[i], B[i]);
