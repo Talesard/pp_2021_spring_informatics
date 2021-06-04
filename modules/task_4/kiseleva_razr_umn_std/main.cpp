@@ -6,8 +6,8 @@
 #include <complex>
 #include "./umnrazr.h"
 
-TEST(CCR_UMN, razm1020x100_100_10000) {
-    int na = 1020;
+TEST(CCR_UMN, razm1030x100_100_10000) {
+    int na = 1030;
     int ma = 100;
     int nb = 100;
     int mb = 100;
