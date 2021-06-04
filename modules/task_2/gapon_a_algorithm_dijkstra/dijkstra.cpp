@@ -118,7 +118,7 @@ std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
     int first, int last) {
 
     int vertex_count = sqrt(graph.size());
-    int max_weight = INT32_MAX;
+    int max_weight = std::numeric_limits<int>::max();
     int minimum;
     int min_vertex;
     int temp;
