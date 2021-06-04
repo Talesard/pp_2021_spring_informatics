@@ -177,16 +177,32 @@ std::vector<int> ParallelOddEvenShellSort(const std::vector<int> a, int piece) {
                 temp[i] = ShellSort(temp[i]);
         }, tbb::simple_partitioner());
     init.terminate();
+    std::vector<std::vector<int>> res(temp);
     std::vector<int> even;
     std::vector<int> odd;
-    std::vector<int> reslt;
-    reslt = temp[0];
-    for (int i = 1; i < piece; i++) {
-        even = EvenMerge(reslt, temp[i]);
-        odd = OddMerge(reslt, temp[i]);
-        reslt = BatcherMerge(even, odd);
+    int k = piece;
+    while (k != 1) {
+        std::vector<std::vector<int>> tmp(k / 2 + k % 2);
+        std::vector<std::vector<int>> left(k / 2);
+        std::vector<std::vector<int>> right(k / 2);
+        int j = 0;
+        for (int i = 0; i < k - 1; i += 2, j++) {
+            left[j] = res[i];
+            right[j] = res[i + 1];
+        }
+        int size = static_cast<int>(left.size());
+        for (j = 0; j != size; j++) {
+            even = EvenMerge(left[j], right[j]);
+            odd = OddMerge(left[j], right[j]);
+            tmp[j] = BatcherMerge(even, odd);
+        }
+        if (k % 2 == 1) {
+            tmp[size] = res[k - 1];
+        }
+        res = tmp;
+        k = (k + 1) / 2;
     }
-    return reslt[0];
+    return res[0];
 }
 std::vector<int> SequentialOddEvenShellSort(const std::vector<int> a, int piece) {
     std::vector<std::vector<int>> temp = Division(a, piece);
