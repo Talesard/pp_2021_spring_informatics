@@ -196,4 +196,5 @@ std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
             }
         }
     }
+    return gr;
 }
