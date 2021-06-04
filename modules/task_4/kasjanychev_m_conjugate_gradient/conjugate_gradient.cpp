@@ -53,9 +53,9 @@ std::vector<double> multiMtxVecPar(std::vector<std::vector<double> > mtx, std::v
             } else {
                 ie = is + countStr;
             }
-            for (size_t j = is; j < ie; j++) {
+            for (int j = is; j < ie; j++) {
                 double tmp = 0;
-                for (int k = 0; k < x.size(); k++) {
+                for (size_t k = 0; k < x.size(); k++) {
                     tmp += mtx[j][k] * x[k];
                 }
                 res[j] = tmp;
