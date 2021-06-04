@@ -67,7 +67,7 @@ TEST(Conjugate_gradient_omp, MultiMB) {
     }
 }
 TEST(Conjugate_gradient_omp, MultiMBRandom) {
-	int n = 100;
+    int n = 100;
     std::vector<std::vector<double>> M = getRandomMatrix(n);
     std::vector<double> B = getRandomVector(n);
 
