@@ -186,7 +186,7 @@ std::vector<int> ParallelOddEvenShellSort(const std::vector<int> a, int piece) {
         odd = OddMerge(reslt, temp[i]);
         reslt = BatcherMerge(even, odd);
     }
-    return reslt;
+    return reslt[0];
 }
 std::vector<int> SequentialOddEvenShellSort(const std::vector<int> a, int piece) {
     std::vector<std::vector<int>> temp = Division(a, piece);
