@@ -173,8 +173,8 @@ std::vector<int> ParallelOddEvenShellSort(const std::vector<int>& a, int piece) 
     tbb::task_scheduler_init init(piece);
     tbb::parallel_for(tbb::blocked_range<size_t>(0, temp.size(), 1),
         [&temp](const tbb::blocked_range<size_t>& p) {
-            int begin = r.begin();
-            int end = r.end();
+            int begin = p.begin();
+            int end = p.end();
             for (int i = begin; i != end; ++i)
                 temp[i] = ShellSort(temp[i]);
         }, tbb::simple_partitioner());
