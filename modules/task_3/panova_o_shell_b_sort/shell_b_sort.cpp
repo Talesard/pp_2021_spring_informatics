@@ -177,7 +177,6 @@ std::vector<int> ParallelOddEvenShellSort(const std::vector<int> a, int piece) {
                 temp[i] = ShellSort(temp[i]);
         }, tbb::simple_partitioner());
     init.terminate();
-    
     std::vector<int> even, odd, res = temp[0];
     for (int i = 1; i < piece; i++) {
         even = EvenMerge(res, temp[i]);
