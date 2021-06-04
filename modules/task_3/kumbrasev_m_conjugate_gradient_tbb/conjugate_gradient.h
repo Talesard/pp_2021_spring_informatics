@@ -1,6 +1,6 @@
 // Copyright 2021 Kumbrasev Mark
-#ifndef MODULES_TASK_2_KUMBRASEV_M_CONJUGATE_GRADIENT_TBB_CONJUGATE_GRADIENT_H_
-#define MODULES_TASK_2_KUMBRASEV_M_CONJUGATE_GRADIENT_TBB_CONJUGATE_GRADIENT_H_
+#ifndef MODULES_TASK_3_KUMBRASEV_M_CONJUGATE_GRADIENT_TBB_CONJUGATE_GRADIENT_H_
+#define MODULES_TASK_3_KUMBRASEV_M_CONJUGATE_GRADIENT_TBB_CONJUGATE_GRADIENT_H_
 
 #include <iostream>
 #include <cmath>
@@ -19,4 +19,4 @@ std::vector<double> mMultv(const std::vector<std::vector<double>> &M, const std:
 double vecNorm(const std::vector<double> &V);
 std::vector<double> ConjugateGradient(const std::vector<std::vector<double>> &M, const std::vector<double> &B);
 
-#endif  // MODULES_TASK_2_KUMBRASEV_M_CONJUGATE_GRADIENT_TBB_CONJUGATE_GRADIENT_H_
+#endif  // MODULES_TASK_3_KUMBRASEV_M_CONJUGATE_GRADIENT_TBB_CONJUGATE_GRADIENT_H_
