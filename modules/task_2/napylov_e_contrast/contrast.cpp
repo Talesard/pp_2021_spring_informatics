@@ -15,28 +15,6 @@ void print_vec(const VecImage& vec) {
     std::cout << std::endl;
 }
 
-VecImage image_to_vec(const Image& image, int w, int h) {
-    VecImage res(w * h);
-    int k = 0;
-    for (int i = 0; i < w; i++) {
-        for (int j = 0; j < h; j++) {
-            res[k++] = image[i][j];
-        }
-    }
-    return res;
-}
-
-Image vec_to_image(const VecImage& vec, int w, int h) {
-    Image res(w);
-    for (int i = 0; i < w; i++) {
-        res[i].resize(h);
-        for (int j = 0; j < h; j++) {
-            res[i][j] = vec[h * i + j];
-        }
-    }
-    return res;
-}
-
 VecImage RandomVector(int size) {
     static std::mt19937 gen(time(0));
     VecImage result(size);
@@ -47,8 +25,7 @@ VecImage RandomVector(int size) {
     return result;
 }
 
-VecImage add_contrast(VecImage image, unsigned char down, unsigned char up) {
-    assert(up > down);
+VecImage add_contrast(VecImage image) {
     unsigned char min = *std::min_element(image.begin(), image.end());
     unsigned char max = *std::max_element(image.begin(), image.end());
     if (max == min) {
@@ -56,7 +33,7 @@ VecImage add_contrast(VecImage image, unsigned char down, unsigned char up) {
     } else {
         for (size_t i = 0; i < image.size(); i++) {
             image[i] = round((static_cast<double>((image[i] - min))
-                / static_cast<double>((max - min)))* (up - down));
+                / static_cast<double>((max - min)))* 255);
         }
         return image;
     }
@@ -66,32 +43,33 @@ std::pair<unsigned char, unsigned char> minmax_omp(const VecImage& image) {
     unsigned char min_col = 255;
     unsigned char max_col = 0;
 
-    // MSVC19 does not support the min/max reduction :(
-    // -> Each thread searches for a local min max.
-    std::vector<unsigned char> min_vec(omp_get_max_threads());
+    int max_threads = omp_get_max_threads();
+    std::vector<unsigned char> min_vec(max_threads);
     std::fill(min_vec.begin(), min_vec.end(), 255);
-    std::vector<unsigned char> max_vec(omp_get_max_threads());
+    std::vector<unsigned char> max_vec(max_threads);
     std::fill(max_vec.begin(), max_vec.end(), 0);
-    #pragma omp parallel for
-    for (int i = 0; i < static_cast<int>(image.size()); i++) {
-        if (image[i] > max_vec[omp_get_thread_num()]) {
-            max_vec[omp_get_thread_num()] = image[i];
-        }
-        if (image[i] < min_vec[omp_get_thread_num()]) {
-            min_vec[omp_get_thread_num()] = image[i];
+
+    #pragma omp parallel
+    {
+        int thread_id = omp_get_thread_num();
+        #pragma omp for
+        for (int i = 0; i < static_cast<int>(image.size()); i++) {
+            if (image[i] > max_vec[thread_id]) {
+                max_vec[thread_id] = image[i];
+            }
+            if (image[i] < min_vec[thread_id]) {
+                min_vec[thread_id] = image[i];
+            }
         }
     }
     // Reduction
     max_col = *std::max_element(max_vec.begin(), max_vec.end());
     min_col = *std::min_element(min_vec.begin(), min_vec.end());
-    return std::pair<double, double>(min_col, max_col);
+    return std::pair<unsigned char, unsigned char>(min_col, max_col);
 }
 
-VecImage add_contrast_omp(VecImage image, unsigned char down,
-                                          unsigned char up) {
-    assert(up > down);
-
-    std::pair<double, double> minmax = minmax_omp(image);
+VecImage add_contrast_omp(VecImage image) {
+    std::pair<unsigned char, unsigned char> minmax = minmax_omp(image);
     unsigned char min_col = minmax.first;
     unsigned char max_col = minmax.second;
 
@@ -101,7 +79,7 @@ VecImage add_contrast_omp(VecImage image, unsigned char down,
         #pragma omp parallel for
         for (int i = 0; i < static_cast<int>(image.size()); i++) {
             image[i] = round((static_cast<double>((image[i] - min_col))
-                / static_cast<double>((max_col - min_col))) * (up - down));
+                / static_cast<double>((max_col - min_col))) * 255);
         }
         return image;
     }
