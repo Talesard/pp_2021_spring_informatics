@@ -112,22 +112,6 @@ std::vector<int> dijkstra_parallel(const std::vector<int>& graph,
         }
     }
     return gr;
-    while (last != first) {
-        for (int m = 0; m < vertex_count; m++) {
-            if (graph[last * vertex_count + m] < 0) {
-                throw "Error";
-            }
-            if (graph[last * vertex_count + m] > 0) {
-                temp = weight - graph[last * vertex_count + m];
-                if (points_weight[m] == temp) {
-                    weight = temp;
-                    last = m;
-                    gr.push_back(m + 1);
-                }
-            }
-        }
-    }
-    return gr;
 }
 
 std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
@@ -192,22 +176,6 @@ std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
     gr.push_back(last + 1);
     int weight = points_weight[last];
 
-    while (last != first) {
-        for (int m = 0; m < vertex_count; m++) {
-            if (graph[last * vertex_count + m] < 0) {
-                throw "Error";
-            }
-            if (graph[last * vertex_count + m] > 0) {
-                temp = weight - graph[last * vertex_count + m];
-                if (points_weight[m] == temp) {
-                    weight = temp;
-                    last = m;
-                    gr.push_back(m + 1);
-                }
-            }
-        }
-    }
-    return gr;
     while (last != first) {
         for (int m = 0; m < vertex_count; m++) {
             if (graph[last * vertex_count + m] < 0) {
