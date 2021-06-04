@@ -127,6 +127,7 @@ std::vector<int> dijkstra_parallel(const std::vector<int>& graph,
             }
         }
     }
+    return gr;
 }
 
 std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
@@ -222,4 +223,5 @@ std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
             }
         }
     }
+    return gr;
 }
