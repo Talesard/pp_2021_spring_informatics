@@ -28,30 +28,30 @@ std::vector<std::vector<int>> Division(const std::vector<int>& a, int piece) {
     return res;
 }
 std::vector<int> EvenMerge(const std::vector<int>& left, const std::vector<int>& right) {
-    std::vector<int> res;
+    std::vector<int> res_a;
     int left_size = static_cast<int>(left.size());
     int right_size = static_cast<int>(right.size());
     int left_iter = 0, right_iter = 0;
-    res.reserve((left_size + 1) / 2 + (right_size + 1) / 2);
+    res_a.reserve((left_size + 1) / 2 + (right_size + 1) / 2);
     while ((left_iter < left_size) && (right_iter < right_size)) {
         if (left[left_iter] <= right[right_iter]) {
-            res.push_back(left[left_iter]);
+            res_a.push_back(left[left_iter]);
             left_iter += 2;
         } else {
-            res.push_back(right[right_iter]);
+            res_a.push_back(right[right_iter]);
             right_iter += 2;
         }
     }
     if (right_iter >= right_size) {
         for (int i = left_iter; i < left_size; i += 2) {
-            res.push_back(left[i]);
+            res_a.push_back(left[i]);
         }
     } else {
         for (int i = right_iter; i < right_size; i += 2) {
-            res.push_back(right[i]);
+            res_a.push_back(right[i]);
         }
     }
-    return res;
+    return res_a;
 }
 std::vector<int> OddMerge(const std::vector<int>& left, const std::vector<int>& right) {
     std::vector<int> res;
@@ -179,14 +179,14 @@ std::vector<int> ParallelOddEvenShellSort(const std::vector<int> a, int piece) {
     init.terminate();
     std::vector<int> even;
     std::vector<int> odd;
-    std::vector<int> res;
-    res = temp[0];
+    std::vector<int> reslt;
+    reslt = temp[0];
     for (int i = 1; i < piece; i++) {
-        even = EvenMerge(res, temp[i]);
-        odd = OddMerge(res, temp[i]);
-        res = BatcherMerge(even, odd);
+        even = EvenMerge(reslt, temp[i]);
+        odd = OddMerge(reslt, temp[i]);
+        reslt = BatcherMerge(even, odd);
     }
-    return res;
+    return reslt;
 }
 std::vector<int> SequentialOddEvenShellSort(const std::vector<int> a, int piece) {
     std::vector<std::vector<int>> temp = Division(a, piece);
