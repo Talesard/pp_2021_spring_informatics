@@ -55,9 +55,6 @@ std::vector < std::pair<int, int>> JarvisAlg(const std::vector<std::pair<int,
     if (count_points == 0) {
         throw("Error");
     }
-    if (count_points < 2) {
-        return points;
-    }
     std::pair<int, int> base = SLeftMPoint(points);
     std::vector < std::pair<int, int>> convex_hull;
     convex_hull.push_back(base);
