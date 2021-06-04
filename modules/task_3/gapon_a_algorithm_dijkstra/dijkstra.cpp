@@ -72,7 +72,6 @@ std::vector<int> dijkstra_parallel(const std::vector<int>& graph,
                 return x;
             }
             return y;
-            return y;
         });
 
         min_point = min_valume[1];
@@ -118,24 +117,6 @@ std::vector<int> dijkstra_parallel(const std::vector<int>& graph,
     }
 
     return gr;
-    while (last != first) {
-        tbb::parallel_for(
-            tbb::blocked_range<int>(0, points_count),
-            [&](const tbb::blocked_range<int>& v) {
-            for (int i = v.begin(); i < v.end(); i++) {
-                if (graph[last * points_count + i] > 0) {
-                    temp = weight - graph[last * points_count + i];
-                    if (points_len[i] == temp) {
-                        weight = temp;
-                        last = i;
-                        mutex.lock();
-                        gr.push_back(i + 1);
-                        mutex.unlock();
-                    }
-                }
-            }
-        });
-    }
 }
 
 std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
@@ -200,23 +181,6 @@ std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
     gr.push_back(last + 1);
     int weight = points_weight[last];
 
-    while (last != first) {
-        for (int m = 0; m < vertex_count; m++) {
-            if (graph[last * vertex_count + m] < 0) {
-                throw "Error";
-            }
-            if (graph[last * vertex_count + m] > 0) {
-                temp = weight - graph[last * vertex_count + m];
-                if (points_weight[m] == temp) {
-                    weight = temp;
-                    last = m;
-                    gr.push_back(m + 1);
-                }
-            }
-        }
-    }
-
-    return gr;
     while (last != first) {
         for (int m = 0; m < vertex_count; m++) {
             if (graph[last * vertex_count + m] < 0) {
