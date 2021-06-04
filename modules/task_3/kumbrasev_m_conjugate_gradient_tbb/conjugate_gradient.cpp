@@ -42,6 +42,7 @@ std::vector<double> mMultv(const std::vector<std::vector<double>> &M, const std:
         for ( int i = r.begin(); i < r.end(); i++ ) {
             C[i] = innerVec(M[i], V);
         }
+	});
     return C;
 }
 
