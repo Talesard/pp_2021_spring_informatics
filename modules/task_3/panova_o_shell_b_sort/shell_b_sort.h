@@ -15,6 +15,6 @@ std::vector<int> OddMerge(const std::vector<int>& left, const std::vector<int>& 
 std::vector<int> BatcherMerge(const std::vector<int>& left, const std::vector<int>& right);
 std::vector<int> ShellSort(const std::vector<int>& a);
 std::vector<std::vector<int>> Division(const std::vector<int>& a, int piece);
-std::vector<int> ParallelOddEvenShellSort(const std::vector<int> a, int piece);
-std::vector<int> SequentialOddEvenShellSort(const std::vector<int> a, int piece);
+std::vector<int> ParallelOddEvenShellSort(const std::vector<int>& a, int piece);
+std::vector<int> SequentialOddEvenShellSort(const std::vector<int>& a, int piece);
 #endif  // MODULES_TASK_3_PANOVA_O_SHELL_B_SORT_SHELL_B_SORT_H_

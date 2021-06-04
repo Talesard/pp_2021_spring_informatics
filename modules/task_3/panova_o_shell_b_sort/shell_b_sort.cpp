@@ -168,12 +168,14 @@ std::vector<int> ShellSort(const std::vector<int>& a) {
     }
     return res;
 }
-std::vector<int> ParallelOddEvenShellSort(const std::vector<int> a, int piece) {
+std::vector<int> ParallelOddEvenShellSort(const std::vector<int>& a, int piece) {
     std::vector<std::vector<int>> temp = Division(a, piece);
     tbb::task_scheduler_init init(piece);
     tbb::parallel_for(tbb::blocked_range<size_t>(0, temp.size(), 1),
         [&temp](const tbb::blocked_range<size_t>& p) {
-            for (int i = p.begin(); i != p.end(); ++i)
+            int begin = r.begin();
+            int end = r.end();
+            for (int i = begin; i != end; ++i)
                 temp[i] = ShellSort(temp[i]);
         }, tbb::simple_partitioner());
     init.terminate();
@@ -204,7 +206,7 @@ std::vector<int> ParallelOddEvenShellSort(const std::vector<int> a, int piece) {
     }
     return res[0];
 }
-std::vector<int> SequentialOddEvenShellSort(const std::vector<int> a, int piece) {
+std::vector<int> SequentialOddEvenShellSort(const std::vector<int>& a, int piece) {
     std::vector<std::vector<int>> temp = Division(a, piece);
 
     for (int i = 0; i < piece; i++) {
