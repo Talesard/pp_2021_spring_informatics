@@ -5,16 +5,13 @@
 #include "./convex_hull_jarvis.h"
 
 TEST(ConvexHull, test1) {
-    std::vector<std::pair<int, int>> points = { std::pair<int, int>(15, 25) };
-    std::vector<std::pair<int, int>> alg = JarvisAlg(points);
-    ASSERT_EQ(points, alg);
+    std::vector<std::pair<int, int>> points = getRandomPoint(10);
+    ASSERT_NO_THROW(JarvisAlg(points));
 }
 
 TEST(ConvexHull, test2) {
-    std::vector<std::pair<int, int>> points = { std::pair<int, int>(3, 4),
-        std::pair<int, int>(4, 9) };
-    std::vector<std::pair<int, int>> alg = JarvisAlg(points);
-    ASSERT_EQ(points, alg);
+    std::vector<std::pair<int, int>> points = getRandomPoint(100000);
+    ASSERT_NO_THROW(JarvisAlg(points));
 }
 
 TEST(ConvexHull, test3) {
