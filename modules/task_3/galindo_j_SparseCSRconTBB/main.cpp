@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#include "./csrOMP.h"
+#include "./csrTBB.h"
 
 TEST(csr_dispersa_test, testeo_de_generacion) {
     int n = 6;
@@ -61,44 +61,63 @@ TEST(csr_dispersa_T, testeo_de_transposicion_dos) {
     ASSERT_EQ(TransponationMat.filaN, RowIndex);
 }
 
-TEST(csr_dispersa_MULT, testeo_de_multiplicacion) {
+TEST(csr_dispersa_OMP, testeo_de_multiplicacion) {
     int n = 2;
     std::vector<std::complex<double>> A1 = {
         {0, 0}, {2, 0},
         {1, 0}, {0, 0}
     };
     std::vector<std::complex<double>> A2 = {
-        {7, 0}, {4, 0},
-        {6, 0}, {9, 0}
+        {0, 0}, {2, 0},
+        {2, 0}, {0, 0}
     };
 
     DispersaMatrix Primera_matrix, Segunda_matrix, Solucion;
     Primera_matrix = ma_generacion(A1, n);
     Segunda_matrix = ma_generacion(A2, n);
     Solucion = multiplicacion(Primera_matrix, Segunda_matrix);
-    std::vector<std::complex<double>> valor_estimado = { {12, 0}, {18, 0}, {7, 0}, {4, 0} };
+    std::vector<std::complex<double>> valor_estimado = { {4, 0}, {2, 0} };
     ASSERT_EQ(Solucion.valor, valor_estimado);
 }
 
-TEST(csr_dispersa_OMP, testeo_de_multiplicacion_OMP) {
-    int n = 512;
-    double inicio, fin;
-    DispersaMatrix SparseMat1 = ma_generacion_dia(n);
-    DispersaMatrix SparseMat2 = ma_generacion_dia(n);
-    inicio = omp_get_wtime();
-    DispersaMatrix SparseMatResult = multiplicacion(SparseMat1, SparseMat2);
-    fin = omp_get_wtime();
-    std::cout << "Tiempo secuencial = " << fin - inicio << "\n";
+TEST(csr_dispersa_OMP, testeo_de_multiplicacion_dos) {
+    int n = 2;
+    std::vector<std::complex<double>> A1 = {
+        {0, 0}, {0, 0},
+        {0, 0}, {0, 0}
+    };
+    std::vector<std::complex<double>> A2 = {
+        {0, 0}, {2, 0},
+        {2, 0}, {0, 0}
+    };
 
-    inicio = omp_get_wtime();
-    DispersaMatrix SparseMatResult_omp = multiplicacion_omp(SparseMat1,
-        SparseMat2);
-    fin = omp_get_wtime();
-    std::cout << "Tiempo con OpenMP = " << fin - inicio << "\n";
+    DispersaMatrix Primera_matrix, Segunda_matrix, Solucion;
+    Primera_matrix = ma_generacion(A1, n);
+    Segunda_matrix = ma_generacion(A2, n);
+    Solucion = multiplicacion(Primera_matrix, Segunda_matrix);
+    std::vector<std::complex<double>> valor_estimado = {};
+    ASSERT_EQ(Solucion.valor, valor_estimado);
+}
 
-    EXPECT_EQ(SparseMatResult.valor, SparseMatResult_omp.valor);
-    EXPECT_EQ(SparseMatResult.filaN, SparseMatResult_omp.filaN);
-    EXPECT_EQ(SparseMatResult.columnaN, SparseMatResult_omp.columnaN);
+TEST(csr_dispersa_OMP, testeo_de_multiplicacion_TBB) {
+    int n = 999;
+    DispersaMatrix Primera_matrix = ma_generacion_dia(n);
+    DispersaMatrix Segunda_matrix = ma_generacion_dia(n);
+
+    auto inicio = tbb::tick_count::now();
+    DispersaMatrix Solucion = multiplicacion(Primera_matrix, Segunda_matrix);
+    auto fin = tbb::tick_count::now();
+    std::cout << "Tiempo secuencial = " << (fin - inicio).seconds() << "\n";
+
+    inicio = tbb::tick_count::now();
+    DispersaMatrix SparseMatResult_tbb = multiplicacion_tbb(Primera_matrix,
+        Segunda_matrix);
+    fin = tbb::tick_count::now();
+    std::cout << "Tiempo con TBB = " << (fin - inicio).seconds() << "\n";
+
+    EXPECT_EQ(Solucion.valor, SparseMatResult_tbb.valor);
+    EXPECT_EQ(Solucion.filaN, SparseMatResult_tbb.filaN);
+    EXPECT_EQ(Solucion.columnaN, SparseMatResult_tbb.columnaN);
 }
 
 int main(int argc, char **argv) {
