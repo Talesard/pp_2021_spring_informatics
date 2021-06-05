@@ -4,9 +4,10 @@
 
 #include <vector>
 
-std::vector<int> generateSimpleGraph(int size);
-std::vector<int> dijkstra(const std::vector<int>& graph, int start, int end);
-std::vector<int> dijkstraParallel(const std::vector<int>& graph,
-int start, int end);
+std::vector<int> dijkstra_parallel(const std::vector<int>& graph,
+int first, int end);
+std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
+int first, int end);
+std::vector<int> Create_Graph(int size);
 
 #endif  // MODULES_TASK_2_GAPON_A_ALGORITHM_DIJKSTRA_DIJKSTRA_H_

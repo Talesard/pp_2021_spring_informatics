@@ -6,130 +6,53 @@
 #include <limits>
 #include <cmath>
 
-std::vector<int> generateSimpleGraph(int size) {
-    std::vector<int> sample(size * size, 2);
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            if (i == j) {
-                sample[i * size + j] = 1;
+std::vector<int> Create_Graph(int s) {
+    std::vector<int> example(s * s, 2);
+    for (int m = 0; m < s; m++) {
+        for (int n = 0; n < s; n++) {
+            if (m == n) {
+                example[m * s + n] = 1;
             }
         }
     }
-    return sample;
+    return example;
 }
 
-std::vector<int> dijkstra(const std::vector<int>& graph, int start, int end) {
-    if (graph.size() == 0) {
-        throw "Empty graph";
+std::vector<int> dijkstra_parallel(const std::vector<int>& graph,
+    int first, int last) {
+
+    int vertex_count = sqrt(graph.size());
+    int max_weight = std::numeric_limits<int>::max();
+    int min_vertex;
+    int minimum;
+    int temp;
+    std::vector<int> points_weight(vertex_count, max_weight);
+    std::vector<int> gr;
+    std::vector<bool> processed(vertex_count, false);
+
+    if (sqrt(graph.size()) != vertex_count) {
+        throw "Error size";
     }
 
-    if (start == end)
+    if (first == last)
         return std::vector<int>(1, 0);
 
-    if (start > end) {
-        std::swap(start, end);
-    }
-
-    int points_count = sqrt(graph.size());
-
-    if (sqrt(graph.size()) != points_count) {
-        throw "Wrong size";
-    }
-
-    int max_weight = std::numeric_limits<int>::max();
-    int min, min_point, tmp;
-    std::vector<int> points_len(points_count, max_weight);
-    std::vector<int> path;
-    std::vector<bool> processed(points_count, false);
-
-    // Align start and end with array indexes
-    --start;
-    --end;
-
-    points_len[start] = 0;
-
-    do {
-        min_point = max_weight;
-        min = max_weight;
-
-        // Choose a point to work with
-        for (int i = 0; i < points_count; i++) {
-            if (!processed[i] && points_len[i] < min) {
-                min_point = i;
-                min = points_len[i];
-            }
-        }
-
-        if (min_point != max_weight) {
-            for (int i = 0; i < points_count; i++) {
-                if (graph[min_point * points_count + i] > 0) {
-                    tmp = min + graph[min_point * points_count + i];
-                    if (points_len[i] > tmp) {
-                        points_len[i] = tmp;
-                    }
-                }
-            }
-            processed[min_point] = true;
-        }
-    } while (min_point < max_weight);
-
-    // Configuring a path
-    path.push_back(end + 1);
-    int weight = points_len[end];
-
-    while (end != start) {
-        for (int i = 0; i < points_count; i++) {
-            if (graph[end * points_count + i] < 0) {
-                throw "Graph weight can not be less then zero.";
-            }
-            if (graph[end * points_count + i] > 0) {
-                tmp = weight - graph[end * points_count + i];
-                if (points_len[i] == tmp) {
-                    weight = tmp;
-                    end = i;
-                    path.push_back(i + 1);
-                }
-            }
-        }
-    }
-
-    return path;
-}
-
-std::vector<int> dijkstraParallel(const std::vector<int>& graph,
-    int start, int end) {
     if (graph.size() == 0) {
-        throw "Empty graph";
+        throw "Error graph";
     }
 
-    if (start == end)
-        return std::vector<int>(1, 0);
-
-    if (start > end) {
-        std::swap(start, end);
+    if (first > last) {
+        std::swap(first, last);
     }
 
-    int points_count = sqrt(graph.size());
+    --first;
+    --last;
 
-    if (sqrt(graph.size()) != points_count) {
-        throw "Wrong size";
-    }
-
-    int max_weight = std::numeric_limits<int>::max();
-    int min_point, min, tmp;
-    std::vector<int> points_len(points_count, max_weight);
-    std::vector<int> path;
-    std::vector<bool> processed(points_count, false);
-
-    // Align start and end with array indexes
-    --start;
-    --end;
-
-    points_len[start] = 0;
+    points_weight[first] = 0;
     int retry = 10;
     do {
-        min_point = max_weight;
-        min = max_weight;
+        min_vertex = max_weight;
+        minimum = max_weight;
 
 
 #pragma omp parallel
@@ -138,55 +61,135 @@ std::vector<int> dijkstraParallel(const std::vector<int>& graph,
             int local_min = max_weight;
 
 #pragma omp for
-            for (int i = 0; i < points_count; i++) {
-                if (!processed[i] && points_len[i] < local_min) {
-                    local_min = points_len[i];
-                    local_min_point = i;
+            for (int m = 0; m < vertex_count; m++) {
+                if (!processed[m] && points_weight[m] < local_min) {
+                    local_min = points_weight[m];
+                    local_min_point = m;
                 }
             }
 
 #pragma omp critical
             {
-                if (local_min < min) {
-                    min = local_min;
-                    min_point = local_min_point;
+                if (local_min < minimum) {
+                    minimum = local_min;
+                    min_vertex = local_min_point;
                 }
             }
         }
 
-        if (min_point != max_weight) {
-#pragma omp parallel for private(tmp)
-            for (int i = 0; i < points_count; i++) {
-                if (graph[min_point * points_count + i] > 0) {
-                    tmp = min + graph[min_point * points_count + i];
-                    if (points_len[i] > tmp) {
-                        points_len[i] = tmp;
+        if (min_vertex != max_weight) {
+#pragma omp parallel for private(temp)
+            for (int i = 0; i < vertex_count; i++) {
+                if (graph[min_vertex * vertex_count + i] > 0) {
+                    temp = minimum + graph[min_vertex * vertex_count + i];
+                    if (points_weight[i] > temp) {
+                        points_weight[i] = temp;
                     }
                 }
             }
-            processed[min_point] = true;
+            processed[min_vertex] = true;
         }
         retry--;
-    } while (min_point < max_weight || retry == 0);
+    } while (min_vertex < max_weight || retry == 0);
 
-    path.push_back(end + 1);
-    int weight = points_len[end];
+    gr.push_back(last + 1);
+    int weight = points_weight[last];
 
-    while (end != start) {
-#pragma omp parallel for private(tmp)
-        for (int i = 0; i < points_count; i++) {
-            if (graph[end * points_count + i] > 0) {
-                tmp = weight - graph[end * points_count + i];
-                if (points_len[i] == tmp) {
+    while (last != first) {
+#pragma omp parallel for private(temp)
+        for (int i = 0; i < vertex_count; i++) {
+            if (graph[last * vertex_count + i] > 0) {
+                temp = weight - graph[last * vertex_count + i];
+                if (points_weight[i] == temp) {
 #pragma omp critical
                     {
-                        weight = tmp;
-                        end = i;
-                        path.push_back(i + 1);
+                        weight = temp;
+                        last = i;
+                        gr.push_back(i + 1);
                     }
                 }
             }
         }
     }
-    return path;
+    return gr;
+}
+
+std::vector<int> dijkstra_algorithm(const std::vector<int>& graph,
+    int first, int last) {
+
+    int vertex_count = sqrt(graph.size());
+    int max_weight = std::numeric_limits<int>::max();
+    int minimum;
+    int min_vertex;
+    int temp;
+    std::vector<int> points_weight(vertex_count, max_weight);
+    std::vector<int> gr;
+    std::vector<bool> proces(vertex_count, false);
+
+    if (graph.size() == 0) {
+        throw "Error empty graph";
+    }
+
+    if (first == last)
+        return std::vector<int>(1, 0);
+
+    if (first > last) {
+        std::swap(first, last);
+    }
+
+    if (sqrt(graph.size()) != vertex_count) {
+        throw "Error size";
+    }
+
+    // Align start and end with array indexes
+    --first;
+    --last;
+
+    points_weight[first] = 0;
+
+    do {
+        min_vertex = max_weight;
+        minimum = max_weight;
+
+        // Choose a point to work with
+        for (int m = 0; m < vertex_count; m++) {
+            if (!proces[m] && points_weight[m] < minimum) {
+                min_vertex = m;
+                minimum = points_weight[m];
+            }
+        }
+
+        if (min_vertex != max_weight) {
+            for (int n = 0; n < vertex_count; n++) {
+                if (graph[min_vertex * vertex_count + n] > 0) {
+                    temp = minimum + graph[min_vertex * vertex_count + n];
+                    if (points_weight[n] > temp) {
+                        points_weight[n] = temp;
+                    }
+                }
+            }
+            proces[min_vertex] = true;
+        }
+    } while (min_vertex < max_weight);
+
+    // Configuring a path
+    gr.push_back(last + 1);
+    int weight = points_weight[last];
+
+    while (last != first) {
+        for (int m = 0; m < vertex_count; m++) {
+            if (graph[last * vertex_count + m] < 0) {
+                throw "Error";
+            }
+            if (graph[last * vertex_count + m] > 0) {
+                temp = weight - graph[last * vertex_count + m];
+                if (points_weight[m] == temp) {
+                    weight = temp;
+                    last = m;
+                    gr.push_back(m + 1);
+                }
+            }
+        }
+    }
+    return gr;
 }
