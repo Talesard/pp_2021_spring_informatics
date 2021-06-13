@@ -1,4 +1,4 @@
-// Copyright 2020 Lyutova Tanya
+// Copyright 2021 Lyutova Tanya
 #ifndef MODULES_TASK_1_LYUTOVA_T_SOBEL_LYUTOVA_T_SOBEL_H_
 #define MODULES_TASK_1_LYUTOVA_T_SOBEL_LYUTOVA_T_SOBEL_H_
 
@@ -36,5 +36,7 @@ inline int clamp(int value, int min, int max) {
         return min;
     return value;
 }
+
+Image createRandomImage(int rows, int cols);
 
 #endif  // MODULES_TASK_1_LYUTOVA_T_SOBEL_LYUTOVA_T_SOBEL_H_
