@@ -81,7 +81,7 @@ TEST(csr_dispersa_MULT, testeo_de_multiplicacion) {
 }
 
 TEST(csr_dispersa_OMP, testeo_de_multiplicacion_OMP) {
-    int n = 68;
+    int n = 512;
     double inicio, fin;
     DispersaMatrix SparseMat1 = ma_generacion_dia(n);
     DispersaMatrix SparseMat2 = ma_generacion_dia(n);

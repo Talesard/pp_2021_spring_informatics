@@ -26,7 +26,7 @@ Result Contrast(const Result& rm) {
             max = rm[i];
     }
     for (int i = 0; i < static_cast<int>(rm.size()); i++) {
-        outcome[i] = (rm[i] - min) * (255 / (max - min));
+        outcome[i] = ((rm[i] - min) * 255) / (max - min);
     }
     return outcome;
 }
