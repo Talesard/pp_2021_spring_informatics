@@ -101,6 +101,7 @@ std::vector<int> parallelDijkstras(std::vector<int> graph, int start, int end) {
                     min_index = j;
                 }
             }
+#pragma omp critical
             if (min_weight < min_weight2) {
                 min_weight2 = min_weight;
                 min_index2 = min_index;
