@@ -5,6 +5,7 @@
 #include <vector>
 #include <random>
 
+std::vector<int> Random(int size);
 std::vector<int> ShellSort(const std::vector<int>& massiv, int size);
 std::vector<int> ShellBetcherS(const std::vector<int>& mass, int size);
 std::vector<int> BetcherMerge(const std::vector<int>& massiv1, const std::vector<int>& massiv2);

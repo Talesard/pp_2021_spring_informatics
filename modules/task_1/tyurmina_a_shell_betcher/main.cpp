@@ -45,6 +45,22 @@ TEST(shell_betcher, shell_b_20) {
     ASSERT_EQ(vec, sort);
 }
 
+TEST(shell_betcher, shell_b_50_rand) {
+    std::vector<int> vec = Random(50);
+    std::vector<int> sort = ShellSort(vec, 50);
+    std::sort(vec.begin(), vec.end());
+
+    ASSERT_EQ(vec, sort);
+}
+
+TEST(shell_betcher, shell_b_50_rand_s) {
+    std::vector<int> vec = Random(50);
+    std::vector<int> sort = ShellBetcherS(vec, 50);
+    std::sort(vec.begin(), vec.end());
+
+    ASSERT_EQ(vec, sort);
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
